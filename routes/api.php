@@ -19,6 +19,41 @@ use App\Http\Controllers\ShoppingListController;
 use App\Http\Controllers\TipController;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * Service index. Hitting the API root is the first thing anyone does when
+ * handed a deployed URL, so answer with something useful rather than a bare
+ * 404. Public endpoints only — nothing here is sensitive.
+ */
+Route::get('/', function () {
+    return response()->json([
+        'service' => config('app.name'),
+        'status' => 'ok',
+        'docs' => 'https://github.com/easteak00987/FridgeToFork#readme',
+        'endpoints' => [
+            'public' => [
+                'GET  /api/recipes' => 'Recipe library. Filters: search, categories, cuisine, region, difficulty, diets, ingredients, max_minutes',
+                'GET  /api/recipes/{id}' => 'A single recipe',
+                'GET  /api/recipes/{id}/cook' => 'Guided cooking steps, timers and scaled ingredients',
+                'GET  /api/recipes/{id}/artwork.svg' => 'Generated dish illustration',
+                'POST /api/pantry/search' => 'Ingredient-based search: what can I cook from these?',
+                'GET  /api/cuisines' => 'Cuisine map: every country with a recipe count',
+                'GET  /api/cuisines/{code}' => 'Recipes from one country',
+                'GET  /api/ingredients' => 'Ingredient autocomplete',
+                'GET  /api/categories' => 'Recipe categories',
+                'GET  /api/leaderboards' => 'Community leaderboard',
+                'POST /api/register, /api/login' => 'Authentication',
+            ],
+            'authenticated' => [
+                'GET|POST|PUT|DELETE /api/pantry' => 'Your fridge',
+                'GET|POST|PUT|DELETE /api/meal-plan' => 'Weekly meal planner',
+                'GET|POST|PUT|DELETE /api/shopping-list' => 'Auto shopping list',
+                'POST /api/shopping-list/generate' => 'Build the list from the planned week',
+                'GET|PUT /api/profile' => 'Dietary preferences and skill level',
+            ],
+        ],
+    ]);
+});
+
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('auth/google', [AuthController::class, 'google']);
