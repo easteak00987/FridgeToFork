@@ -26,6 +26,9 @@ services:
     region: singapore
     healthCheckPath: /api/cuisines
     envVars:
+      - key: APP_NAME
+        value: FridgeToFork
+
       - key: APP_ENV
         value: production
 
