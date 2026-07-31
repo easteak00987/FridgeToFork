@@ -159,11 +159,25 @@ PostgreSQL instead of SQLite, uncomment the `pgsql` block in `.env`.
 ## Deployment
 
 The two halves deploy separately: the SPA to **Vercel**, the Laravel API and its
-PostgreSQL database to **Railway**. Vercel cannot host the API — PHP is not a
-first-class runtime there, and the filesystem is read-only, which Laravel's
+PostgreSQL database to a container host. Vercel cannot host the API — PHP is not
+a first-class runtime there, and the filesystem is read-only, which Laravel's
 `storage/framework` cache, session and view directories need.
 
-### 1. Backend → Railway
+Two container hosts are wired up; pick either:
+
+- **Render** — `render.yaml` blueprint, provisions the web service and Postgres
+  together. Import it at Dashboard → New → Blueprint.
+- **Railway** — `railway.toml`, builds the same Dockerfile.
+
+Both inject `PORT` and a `DATABASE_URL`, which `docker/app/start.sh` handles.
+
+### 1a. Backend → Render
+
+Import `render.yaml`, then set the two secrets it deliberately leaves blank:
+`APP_KEY` (from `php artisan key:generate --show`) and `APP_URL` (the service's
+own URL, once Render assigns it).
+
+### 1b. Backend → Railway
 
 Railway builds `docker/app/Dockerfile` (already wired up in `railway.toml`).
 

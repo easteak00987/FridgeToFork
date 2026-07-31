@@ -1,0 +1,66 @@
+# Render blueprint for the FridgeToFork API.
+#
+# Render is used instead of Railway because it builds straight from a
+# Dockerfile, provisions PostgreSQL, and injects PORT — all of which
+# docker/app/start.sh already handles. Import this file via
+# https://render.com/deploy or Dashboard > New > Blueprint.
+#
+# The React client is NOT here; it deploys separately to Vercel from client/.
+
+databases:
+  - name: fridgetofork-db
+    databaseName: fridgetofork
+    user: fridgetofork
+    plan: free
+
+services:
+  - type: web
+    name: fridgetofork-api
+    runtime: docker
+    dockerfilePath: ./docker/app/Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    healthCheckPath: /api/cuisines
+    envVars:
+      - key: APP_ENV
+        value: production
+
+      - key: APP_DEBUG
+        value: "false"
+
+      # Generate locally with `php artisan key:generate --show` and paste it
+      # into the Render dashboard. sync:false keeps the secret out of git.
+      - key: APP_KEY
+        sync: false
+
+      # Set to this service's own https URL after the first deploy — recipe
+      # image_url values are absolute and are built from it.
+      - key: APP_URL
+        sync: false
+
+      - key: DB_CONNECTION
+        value: pgsql
+
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fridgetofork-db
+          property: connectionString
+
+      # The Vercel origin allowed to call this API.
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://fridgetofork-theta.vercel.app
+
+      # Seeds the 32 demo recipes on first boot. Set back to false afterwards
+      # so a restart cannot resurrect rows someone deleted.
+      - key: RUN_SEED
+        value: "true"
+
+      - key: LOG_CHANNEL
+        value: stderr
+
+      - key: MAIL_MAILER
+        value: log
+
+      - key: NUTRITION_PROVIDER
+        value: local
