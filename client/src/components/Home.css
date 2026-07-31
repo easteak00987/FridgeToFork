@@ -1,9 +1,9 @@
 /* ─────────────────────────────────────────
-   Home.css  —  Chef's Atlas Homepage
+   Home.css  —  FridgeToFork Homepage
    Design tokens mirror About.css + Navbar.css
 ───────────────────────────────────────── */
 :root {
-  --cream: #fdf6ec;
+  --cream: #fbfbfa;
   --charcoal: #1a1612;
   --brown: #4a2c17;
   --amber: #c9742b;
@@ -62,7 +62,7 @@
   align-items: center;
   padding: 80px 60px;
   gap: 60px;
-  background: linear-gradient(135deg, #fdf6ec 55%, #fce8d0 100%);
+  background: linear-gradient(135deg, #fbfbfa 55%, #fce8d0 100%);
   overflow: hidden;
 }
 
@@ -186,7 +186,7 @@
 .hm-hero-badge-inner {
   position: absolute;
   bottom: 20px; left: 20px;
-  background: rgba(253,246,236,0.95);
+  background: rgba(251,251,250,0.95);
   backdrop-filter: blur(10px);
   border-radius: 14px;
   padding: 10px 16px;

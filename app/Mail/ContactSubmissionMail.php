@@ -17,7 +17,7 @@ class ContactSubmissionMail extends Mailable
 
     public function build(): self
     {
-        return $this->subject('Chef\'s Atlas contact submission')
+        return $this->subject('FridgeToFork contact submission')
             ->html(
                 '<h2>New contact submission</h2>' .
                 '<p><strong>Name:</strong> ' . e($this->submission->name) . '</p>' .

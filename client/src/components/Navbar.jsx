@@ -49,11 +49,11 @@ export default function Navbar({
           <Link to="/" className="logo">
             <img
               src={logo}
-              alt="Chef's Atlas Logo"
+              alt="FridgeToFork Logo"
               style={{ height: "102px", width: "auto" }}
             />
             <div className="logo-text">
-              <span className="logo-title">Chef's Atlas</span>
+              <span className="logo-title">FridgeToFork</span>
               <span className="logo-sub">World Kitchen</span>
             </div>
           </Link>

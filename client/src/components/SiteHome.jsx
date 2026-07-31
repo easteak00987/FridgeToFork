@@ -190,16 +190,20 @@ export default function SiteHome({ user, onOpenAuth }) {
     <div className="page-grid home-page">
       <section className="hero-panel home-hero">
         <div className="home-hero__content">
-          <p className="eyebrow">Cook. Share. Climb the board.</p>
-          <h1>Discover standout dishes and fresh uploads at a glance.</h1>
+          <p className="eyebrow">Cook. Share. Waste less.</p>
+          <h1>Tell us what&apos;s in your fridge. We&apos;ll tell you what to cook.</h1>
           <p className="section-copy">
-            Chef&apos;s Atlas now opens like a streaming shelf: jump into top-rated recipes,
-            browse the latest uploads, and spotlight the cooks shaping your community.
+            Add the ingredients you already have and FridgeToFork ranks every recipe by
+            how much of it you can make right now — then walks you through it step by
+            step, timers and all.
           </p>
 
           <div className="hero-actions">
-            <Link className="button" to="/recipes">
-              Explore Recipes
+            <Link className="button" to="/fridge">
+              Search My Fridge
+            </Link>
+            <Link className="button button--ghost" to="/cuisines">
+              Explore the Cuisine Map
             </Link>
             {user ? (
               <Link className="button button--secondary" to="/recipes/new">
@@ -346,7 +350,7 @@ export default function SiteHome({ user, onOpenAuth }) {
 
       <RecipeShelf
         title="Recent Uploads"
-        description="Fresh additions from the Chef's Atlas community, arranged in a smooth, binge-browse row."
+        description="Fresh additions from the FridgeToFork community, arranged in a smooth, binge-browse row."
         recipes={recentRecipes}
       />
 

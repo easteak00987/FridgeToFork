@@ -109,9 +109,9 @@ export default function Signup({ onClose, onSignupSuccess, onSwitchToLogin }) {
         {/* Header */}
         <div className="signup-header">
           <div className="signup-logo">
-            <img src={logo} alt="Chef's Atlas" style={{ width: "100px", height: "100px", objectFit: "contain" }} />
+            <img src={logo} alt="FridgeToFork" style={{ width: "100px", height: "100px", objectFit: "contain" }} />
           </div>
-          <h2 className="signup-title">Join Chef's Atlas</h2>
+          <h2 className="signup-title">Join FridgeToFork</h2>
           <p className="signup-subtitle">Create your account and start sharing world-class recipes</p>
         </div>
 

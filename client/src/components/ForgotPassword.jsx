@@ -39,7 +39,7 @@ export default function ForgotPassword({ onClose, onSwitchToLogin }) {
         {/* Header */}
         <div className="fp-header">
           <div className="fp-logo">
-            <img src={logo} alt="Chef's Atlas" style={{ width: "100px", height: "100px", objectFit: "contain" }} />
+            <img src={logo} alt="FridgeToFork" style={{ width: "100px", height: "100px", objectFit: "contain" }} />
           </div>
           <h2 className="fp-title">
             {submitted ? "Check your inbox" : "Forgot password?"}

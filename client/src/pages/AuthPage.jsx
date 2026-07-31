@@ -70,7 +70,7 @@ export default function AuthPage({ mode }) {
     <main className="auth-page">
       <section className="auth-shell">
         <div className="auth-intro">
-          <span className="auth-kicker">{isLogin ? "Welcome Back" : "Join Chef's Atlas"}</span>
+          <span className="auth-kicker">{isLogin ? "Welcome Back" : "Join FridgeToFork"}</span>
           <h1>{isLogin ? "Sign in to your kitchen." : "Create your cooking profile."}</h1>
           <p>
             {isLogin
@@ -99,7 +99,7 @@ export default function AuthPage({ mode }) {
                   type="text"
                   value={form.name}
                   onChange={handleChange}
-                  placeholder="Chef Atlas"
+                  placeholder="FridgeToFork"
                   required
                 />
               </label>

@@ -22,7 +22,7 @@ const FEATURES = [
   { emoji: "📖", title: "Share Recipes", desc: "Upload your own recipes with photos, ingredients and step-by-step instructions." },
   { emoji: "⭐", title: "Rate & Review", desc: "Give honest ratings and helpful feedback to celebrate great cooking." },
   { emoji: "🗂️", title: "Browse Categories", desc: "Filter by cuisine, difficulty, diet type and more to find exactly what you need." },
-  { emoji: "🗺️", title: "Culinary Map", desc: "Discover recipes from every country — a true atlas of world cuisine." },
+  { emoji: "🗺️", title: "Culinary Map", desc: "Explore recipes country by country on an interactive world map." },
 ];
 
 export default function About() {
@@ -32,15 +32,15 @@ export default function About() {
       <section className="ab-hero">
         <div className="ab-hero-glow" />
         <div className="ab-hero-inner">
-          <span className="ab-hero-eyebrow">About Chef's Atlas</span>
+          <span className="ab-hero-eyebrow">About FridgeToFork</span>
           <h1 className="ab-hero-title">
             A Culinary Map <br />
             <span className="ab-hero-accent">For Every Cook</span>
           </h1>
           <p className="ab-hero-desc">
-            Chef's Atlas is a community-driven food recipe platform where people
+            FridgeToFork is a community-driven food recipe platform where people
             from around the world share, discover, and celebrate recipes.
-            We act as a culinary map — an atlas — connecting cooks through
+            We turn the ingredients you already have into guided recipes, connecting cooks through
             categories, ratings, and meaningful feedback.
           </p>
           <a href="/recipes" className="ab-hero-btn">Explore Recipes →</a>
@@ -65,7 +65,7 @@ export default function About() {
             <p className="ab-mission-desc">
               We believe every recipe carries a story — a grandmother's secret,
               a street food memory, a celebration dish passed through generations.
-              Chef's Atlas exists to preserve and share those stories, making the
+              FridgeToFork exists to preserve and share those stories, making the
               world's culinary heritage accessible to everyone.
             </p>
             
@@ -127,7 +127,7 @@ export default function About() {
           <div className="ab-cta-overlay" />
           <div className="ab-cta-content">
             <h2 className="ab-cta-title">Ready to Start Cooking?</h2>
-            <p className="ab-cta-desc">Join Chef's Atlas and share your first recipe with the world today.</p>
+            <p className="ab-cta-desc">Join FridgeToFork and share your first recipe with the world today.</p>
             <div className="ab-cta-btns">
               <a href="/recipes/new" className="ab-cta-btn-primary">Share a Recipe</a>
               <a href="/recipes" className="ab-cta-btn-secondary">Browse Recipes</a>

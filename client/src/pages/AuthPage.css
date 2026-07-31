@@ -4,7 +4,7 @@
   background:
     radial-gradient(circle at top left, rgba(201, 116, 43, 0.14), transparent 30%),
     radial-gradient(circle at bottom right, rgba(74, 44, 23, 0.1), transparent 28%),
-    #fdf6ec;
+    #fbfbfa;
 }
 
 .auth-shell {

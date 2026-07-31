@@ -117,7 +117,7 @@ export default function AdminDashboard() {
       <section className="admin-hero">
         <div className="admin-hero__copy">
           <p className="eyebrow">Admin Console</p>
-          <h1>Run Chef&apos;s Atlas with confidence.</h1>
+          <h1>Run FridgeToFork with confidence.</h1>
           <p className="section-copy">
             Monitor growth, moderate content, and keep the member experience clean from one
             focused operations dashboard.

@@ -97,14 +97,14 @@ export default function Home() {
 
         <div className="hm-hero-inner">
           <h1 className="hm-hero-title">
-            The World's Recipes,
+            What's In Your Fridge,
             <br />
-            <em>One Atlas.</em>
+            <em>On Your Fork.</em>
           </h1>
 
           <p className="hm-hero-desc">
             Discover, share, and celebrate food from every corner of the earth.
-            Chef's Atlas connects cooks through flavors, stories, and the
+            FridgeToFork connects cooks through flavors, stories, and the
             universal language of good food.
           </p>
 
@@ -115,7 +115,7 @@ export default function Home() {
 
         <div className="hm-hero-visual">
           <div className="hm-hero-frame">
-             <img src={home} alt="Chef's Atlas home" />
+             <img src={home} alt="FridgeToFork home" />
             
           </div>
         </div>
@@ -180,7 +180,7 @@ export default function Home() {
         <span className="hm-eyebrow">The Process</span>
         <h2 className="hm-section-title">Your Culinary Journey Starts Here</h2>
         <p className="hm-section-desc">
-          From your first recipe to becoming a community favourite, Chef's Atlas
+          From your first recipe to becoming a community favourite, FridgeToFork
           guides you every step of the way.
         </p>
 
