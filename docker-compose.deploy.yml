@@ -1,47 +1,60 @@
 services:
   app:
     image: ${APP_IMAGE}
-    container_name: chefsatlas_app
+    container_name: fridgetofork_app
     restart: unless-stopped
     env_file:
       - .env
     environment:
-      DB_HOST: chefsatlas_mssql
+      DB_CONNECTION: pgsql
+      DB_HOST: fridgetofork_postgres
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE:-fridgetofork}
+      DB_USERNAME: ${DB_USERNAME:-fridgetofork}
+      DB_PASSWORD: ${DB_PASSWORD:-StrongPassword123!}
+      MAIL_MAILER: smtp
+      MAIL_HOST: fridgetofork_mailpit
+      MAIL_PORT: 1025
     depends_on:
-      - mssql
-      - mailpit
+      postgres:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
     ports:
       - "${APP_PORT:-8000}:80"
 
   client:
     image: ${CLIENT_IMAGE}
-    container_name: chefsatlas_client
+    container_name: fridgetofork_client
     restart: unless-stopped
     depends_on:
       - app
     ports:
       - "${CLIENT_PORT:-5173}:80"
 
-  mssql:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: chefsatlas_mssql
+  postgres:
+    image: postgres:16-alpine
+    container_name: fridgetofork_postgres
     restart: unless-stopped
     environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_PID: "Developer"
-      MSSQL_SA_PASSWORD: ${DB_PASSWORD:-StrongPassword123!}
-    ports:
-      - "${DB_PORT:-1433}:1433"
+      POSTGRES_DB: ${DB_DATABASE:-fridgetofork}
+      POSTGRES_USER: ${DB_USERNAME:-fridgetofork}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-StrongPassword123!}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-fridgetofork}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
     volumes:
-      - mssql_data:/var/opt/mssql
+      - postgres_data:/var/lib/postgresql/data
 
   mailpit:
     image: axllent/mailpit:latest
-    container_name: chefsatlas_mailpit
+    container_name: fridgetofork_mailpit
     restart: unless-stopped
     ports:
       - "${MAIL_PORT:-1025}:1025"
       - "${MAIL_UI_PORT:-8025}:8025"
 
 volumes:
-  mssql_data:
+  postgres_data:

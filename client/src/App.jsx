@@ -12,8 +12,14 @@ import { useToast } from "./components/useToast";
 import UserHub from "./components/UserHub";
 import AdminDashboard from "./pages/AdminDashboard";
 import ContactPage from "./pages/ContactPage";
+import CookMode from "./pages/CookMode";
+import CuisineMap from "./pages/CuisineMap";
+import MealPlanner from "./pages/MealPlanner";
+import PantryPage from "./pages/PantryPage";
+import ProfilePreferences from "./pages/ProfilePreferences";
 import RecipeEditor from "./pages/RecipeEditor";
 import RecipeLibrary from "./pages/RecipeLibrary";
+import ShoppingList from "./pages/ShoppingList";
 import UserProfile from "./pages/UserProfile";
 
 function ProtectedRoute({ user, children }) {
@@ -92,7 +98,7 @@ function AppContent() {
   );
 
   if (authLoading) {
-    return <div className="shell-loader">Loading Chef&apos;s Atlas...</div>;
+    return <div className="shell-loader">Loading FridgeToFork…</div>;
   }
 
   return (
@@ -104,6 +110,36 @@ function AppContent() {
           <Routes>
             <Route path="/" element={<SiteHome user={user} onOpenAuth={setAuthMode} />} />
             <Route path="/about" element={<SiteAbout />} />
+            <Route
+              path="/fridge"
+              element={<PantryPage user={user} onRequireAuth={() => setAuthMode("login")} />}
+            />
+            <Route path="/cuisines" element={<CuisineMap />} />
+            <Route path="/recipes/:recipeId/cook" element={<CookMode />} />
+            <Route
+              path="/meal-plan"
+              element={
+                <ProtectedRoute user={user}>
+                  <MealPlanner user={user} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/shopping-list"
+              element={
+                <ProtectedRoute user={user}>
+                  <ShoppingList user={user} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/preferences"
+              element={
+                <ProtectedRoute user={user}>
+                  <ProfilePreferences user={user} onUserChange={setUser} />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/contact" element={<ContactPage user={user} onRequireAuth={() => setAuthMode("login")} />} />
             <Route
               path="/recipes"

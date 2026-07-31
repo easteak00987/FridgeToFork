@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-echo "Starting Chef's Atlas app container..."
+echo "Starting FridgeToFork app container..."
 
 DB_CONNECTION="${DB_CONNECTION:-sqlsrv}"
 DB_ENCRYPT_VALUE="${DB_ENCRYPT:-no}"

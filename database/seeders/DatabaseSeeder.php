@@ -27,14 +27,20 @@ class DatabaseSeeder extends Seeder
         }
 
         User::firstOrCreate(
-            ['email' => env('ADMIN_EMAIL', 'admin@chefsatlas.test')],
+            ['email' => env('ADMIN_EMAIL', 'admin@fridgetofork.test')],
             [
-                'name' => 'Chef Atlas Admin',
+                'name' => 'FridgeToFork Admin',
                 'username' => 'admin',
                 'password' => Hash::make(env('ADMIN_PASSWORD', 'AdminPass123!')),
                 'email_verified_at' => now(),
                 'is_admin' => true,
             ]
         );
+
+        $this->call([
+            IngredientSeeder::class,
+            RecipeSeeder::class,
+            DemoCookSeeder::class,
+        ]);
     }
 }

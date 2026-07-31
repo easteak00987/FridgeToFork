@@ -4,10 +4,18 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CookModeController;
+use App\Http\Controllers\CuisineController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\MealPlanController;
+use App\Http\Controllers\PantryController;
+use App\Http\Controllers\PantrySearchController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ShoppingListController;
 use App\Http\Controllers\TipController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +31,18 @@ Route::get('leaderboards', [DashboardController::class, 'leaderboards']);
 Route::get('users/{user}/tips', [TipController::class, 'show']);
 Route::post('contact', [ContactController::class, 'store']);
 
+// Ingredient-Based Search — works signed out too, using ad-hoc ingredients.
+Route::get('ingredients', [IngredientController::class, 'index']);
+Route::get('ingredients/aisles', [IngredientController::class, 'aisles']);
+Route::post('pantry/search', PantrySearchController::class);
+
+// Cuisine Map Explorer
+Route::get('cuisines', [CuisineController::class, 'index']);
+Route::get('cuisines/{code}', [CuisineController::class, 'show']);
+
+// Guided Cooking Mode
+Route::get('recipes/{recipe}/cook', CookModeController::class);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('me', [AuthController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
@@ -37,6 +57,30 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('recipes/{recipe}/reviews', [ReviewController::class, 'store']);
     Route::delete('recipes/{recipe}/reviews/{review}', [ReviewController::class, 'destroy']);
     Route::post('tips', [TipController::class, 'store']);
+
+    // Account & Profiles — dietary preferences and skill level
+    Route::get('profile', [ProfileController::class, 'show']);
+    Route::put('profile', [ProfileController::class, 'update']);
+
+    // What's in my fridge
+    Route::get('pantry', [PantryController::class, 'index']);
+    Route::post('pantry', [PantryController::class, 'store']);
+    Route::put('pantry', [PantryController::class, 'sync']);
+    Route::delete('pantry/{pantryItem}', [PantryController::class, 'destroy']);
+
+    // Meal planner
+    Route::get('meal-plan', [MealPlanController::class, 'index']);
+    Route::post('meal-plan', [MealPlanController::class, 'store']);
+    Route::put('meal-plan/{mealPlanEntry}', [MealPlanController::class, 'update']);
+    Route::delete('meal-plan/{mealPlanEntry}', [MealPlanController::class, 'destroy']);
+
+    // Auto shopping list
+    Route::get('shopping-list', [ShoppingListController::class, 'index']);
+    Route::post('shopping-list', [ShoppingListController::class, 'store']);
+    Route::post('shopping-list/generate', [ShoppingListController::class, 'generate']);
+    Route::put('shopping-list/{shoppingListItem}', [ShoppingListController::class, 'update']);
+    Route::delete('shopping-list/{shoppingListItem}', [ShoppingListController::class, 'destroy']);
+    Route::post('shopping-list/clear', [ShoppingListController::class, 'clear']);
 
     Route::middleware('admin')->group(function () {
         Route::get('admin/dashboard', [AdminController::class, 'dashboard']);

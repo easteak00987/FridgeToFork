@@ -41,7 +41,7 @@ jobs:
         id: app-meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/chefsatlas-app
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/fridgetofork-app
           tags: |
             type=ref,event=branch
             type=sha
@@ -51,7 +51,7 @@ jobs:
         id: client-meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/chefsatlas-client
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/fridgetofork-client
           tags: |
             type=ref,event=branch
             type=sha
@@ -81,8 +81,8 @@ jobs:
       - name: Export deploy image references
         id: export
         run: |
-          echo "app_image=${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/chefsatlas-app:latest" >> "$GITHUB_OUTPUT"
-          echo "client_image=${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/chefsatlas-client:latest" >> "$GITHUB_OUTPUT"
+          echo "app_image=${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/fridgetofork-app:latest" >> "$GITHUB_OUTPUT"
+          echo "client_image=${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/fridgetofork-client:latest" >> "$GITHUB_OUTPUT"
 
   deploy:
     runs-on: ubuntu-latest

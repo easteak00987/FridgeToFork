@@ -20,6 +20,10 @@ class User extends Authenticatable
         'google_id',
         'points',
         'is_admin',
+        'skill_level',
+        'dietary_preferences',
+        'allergies',
+        'household_size',
     ];
 
     /**
@@ -36,6 +40,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'is_admin' => 'boolean',
+        'dietary_preferences' => 'array',
+        'allergies' => 'array',
+        'household_size' => 'integer',
     ];
 
     public function recipes()
@@ -52,6 +59,21 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Recipe::class, 'favorite_recipe')
             ->withTimestamps();
+    }
+
+    public function pantryItems()
+    {
+        return $this->hasMany(PantryItem::class);
+    }
+
+    public function mealPlanEntries()
+    {
+        return $this->hasMany(MealPlanEntry::class);
+    }
+
+    public function shoppingListItems()
+    {
+        return $this->hasMany(ShoppingListItem::class);
     }
 
     public function sentTips()

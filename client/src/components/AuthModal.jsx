@@ -116,7 +116,7 @@ export default function AuthModal({
           x
         </button>
         <p className="eyebrow">{mode === "login" ? "Welcome back" : "Join the community"}</p>
-        <h2>{mode === "login" ? "Sign in to Chef's Atlas" : "Create your account"}</h2>
+        <h2>{mode === "login" ? "Sign in to FridgeToFork" : "Create your account"}</h2>
         <p className="section-copy">
           Share recipes, earn points, and help other cooks with ratings and reviews.
         </p>

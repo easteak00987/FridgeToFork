@@ -17,10 +17,14 @@ const AUDIENCE = [
 ];
 
 const FEATURES = [
+  { emoji: "🥕", title: "Cook What You Have", desc: "Stock your fridge once and every recipe is ranked by how much of it you can already make." },
+  { emoji: "🗺️", title: "Cuisine Map Explorer", desc: "Explore recipes country by country on an interactive world map." },
+  { emoji: "👩‍🍳", title: "Guided Cooking Mode", desc: "One step at a time, with a countdown timer for every step and prompts read aloud." },
+  { emoji: "📅", title: "Weekly Meal Planner", desc: "Drop recipes into your week and see the calories stack up day by day." },
+  { emoji: "🧺", title: "Auto Shopping List", desc: "Everything the week needs that your fridge doesn't have, grouped by aisle." },
+  { emoji: "🥗", title: "Nutrition Insights", desc: "Calories and a protein, carb and fat breakdown for every serving." },
   { emoji: "📖", title: "Share Recipes", desc: "Upload your own recipes with photos, ingredients and step-by-step instructions." },
   { emoji: "⭐", title: "Rate & Review", desc: "Give honest ratings and helpful feedback to celebrate great cooking." },
-  { emoji: "🗂️", title: "Browse Categories", desc: "Filter by cuisine, difficulty, diet type and more to find exactly what you need." },
-  { emoji: "🗺️", title: "Culinary Map", desc: "Discover recipes from every country — a true atlas of world cuisine." },
 ];
 
 export default function About() {
@@ -33,8 +37,8 @@ export default function About() {
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 60% 70% at 0% 50%, var(--brand-glow) 0%, transparent 60%), radial-gradient(ellipse 40% 50% at 100% 20%, var(--accent-glow) 0%, transparent 55%)", pointerEvents: "none" }} />
 
         <div style={{ position: "relative", display: "grid", gap: 20 }}>
-          <span style={{ display: "inline-block", fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--brand)", background: "var(--brand-glow)", padding: "5px 14px", borderRadius: "var(--r-pill)", width: "fit-content", border: "1px solid rgba(184,78,32,0.15)" }}>
-            About Chef's Atlas
+          <span style={{ display: "inline-block", fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--brand)", background: "var(--brand-glow)", padding: "5px 14px", borderRadius: "var(--r-pill)", width: "fit-content", border: "1px solid rgba(15,81,50,0.15)" }}>
+            About FridgeToFork
           </span>
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2.6rem, 5vw, 3.8rem)", fontWeight: 900, lineHeight: 1.08, letterSpacing: "-0.03em", color: "var(--text)", margin: 0 }}>
             A Culinary Map <br />
@@ -43,12 +47,12 @@ export default function About() {
             </span>
           </h1>
           <p style={{ fontSize: "1.05rem", lineHeight: 1.7, color: "var(--muted)", fontWeight: 300, maxWidth: 480, margin: 0 }}>
-            Chef's Atlas is a community-driven food recipe platform where people
+            FridgeToFork is a community-driven food recipe platform where people
             from around the world share, discover, and celebrate recipes.
-            We act as a culinary map — an atlas — connecting cooks through
+            We turn the ingredients you already have into guided recipes, connecting cooks through
             categories, ratings, and meaningful feedback.
           </p>
-          <a href="/recipes" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 26px", borderRadius: "var(--r-pill)", background: "linear-gradient(145deg, #c85e30 0%, #9a3d18 55%, #7a3010 100%)", color: "white", fontWeight: 600, fontSize: "0.92rem", textDecoration: "none", boxShadow: "0 1px 0 rgba(255,255,255,0.18) inset, 0 12px 28px rgba(122,48,16,0.28)", width: "fit-content" }}>
+          <a href="/recipes" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 26px", borderRadius: "var(--r-pill)", background: "linear-gradient(145deg, #166b43 0%, #0b4229 55%, #0a3a24 100%)", color: "white", fontWeight: 600, fontSize: "0.92rem", textDecoration: "none", boxShadow: "0 1px 0 rgba(255,255,255,0.18) inset, 0 12px 28px rgba(10,58,36,0.28)", width: "fit-content" }}>
             Explore Recipes →
           </a>
         </div>
@@ -68,7 +72,7 @@ export default function About() {
       <section style={{ padding: "80px 0", borderTop: "1px solid var(--border)" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 56, alignItems: "center" }}>
           <div style={{ display: "grid", gap: 18 }}>
-            <span style={{ display: "inline-block", fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--brand)", background: "var(--brand-glow)", padding: "5px 14px", borderRadius: "var(--r-pill)", width: "fit-content", border: "1px solid rgba(184,78,32,0.15)" }}>
+            <span style={{ display: "inline-block", fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--brand)", background: "var(--brand-glow)", padding: "5px 14px", borderRadius: "var(--r-pill)", width: "fit-content", border: "1px solid rgba(15,81,50,0.15)" }}>
               Our Mission
             </span>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.8rem, 3.2vw, 2.6rem)", fontWeight: 800, letterSpacing: "-0.025em", lineHeight: 1.15, color: "var(--text)", margin: 0 }}>
@@ -77,7 +81,7 @@ export default function About() {
             <p style={{ fontSize: "1rem", lineHeight: 1.75, color: "var(--muted)", fontWeight: 300, margin: 0 }}>
               We believe every recipe carries a story — a grandmother's secret,
               a street food memory, a celebration dish passed through generations.
-              Chef's Atlas exists to preserve and share those stories, making the
+              FridgeToFork exists to preserve and share those stories, making the
               world's culinary heritage accessible to everyone.
             </p>
           </div>
@@ -101,7 +105,7 @@ export default function About() {
       <section style={{ padding: "80px 0", borderTop: "1px solid var(--border)" }}>
         <div style={{ display: "grid", gap: 40 }}>
           <div style={{ display: "grid", gap: 12 }}>
-            <span style={{ display: "inline-block", fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--brand)", background: "var(--brand-glow)", padding: "5px 14px", borderRadius: "var(--r-pill)", width: "fit-content", border: "1px solid rgba(184,78,32,0.15)" }}>
+            <span style={{ display: "inline-block", fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--brand)", background: "var(--brand-glow)", padding: "5px 14px", borderRadius: "var(--r-pill)", width: "fit-content", border: "1px solid rgba(15,81,50,0.15)" }}>
               Who It's For
             </span>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.8rem, 3.2vw, 2.6rem)", fontWeight: 800, letterSpacing: "-0.025em", lineHeight: 1.15, color: "var(--text)", margin: 0 }}>
@@ -124,7 +128,7 @@ export default function About() {
       <section style={{ padding: "80px 0", borderTop: "1px solid var(--border)" }}>
         <div style={{ display: "grid", gap: 40 }}>
           <div style={{ display: "grid", gap: 12 }}>
-            <span style={{ display: "inline-block", fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--brand)", background: "var(--brand-glow)", padding: "5px 14px", borderRadius: "var(--r-pill)", width: "fit-content", border: "1px solid rgba(184,78,32,0.15)" }}>
+            <span style={{ display: "inline-block", fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--brand)", background: "var(--brand-glow)", padding: "5px 14px", borderRadius: "var(--r-pill)", width: "fit-content", border: "1px solid rgba(15,81,50,0.15)" }}>
               What We Offer
             </span>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.8rem, 3.2vw, 2.6rem)", fontWeight: 800, letterSpacing: "-0.025em", lineHeight: 1.15, color: "var(--text)", margin: 0 }}>
@@ -151,16 +155,16 @@ export default function About() {
             alt="Community cooking"
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(28,16,8,0.72) 0%, rgba(122,48,16,0.55) 50%, rgba(31,82,64,0.45) 100%)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(28,16,8,0.72) 0%, rgba(10,58,36,0.55) 50%, rgba(181,118,42,0.45) 100%)" }} />
           <div style={{ position: "relative", textAlign: "center", padding: "60px 40px", display: "grid", gap: 16, justifyItems: "center" }}>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, letterSpacing: "-0.02em", color: "white", margin: 0, textShadow: "0 2px 20px rgba(0,0,0,0.3)" }}>
               Ready to Start Cooking?
             </h2>
             <p style={{ fontSize: "1.05rem", color: "rgba(255,255,255,0.82)", fontWeight: 300, margin: 0, maxWidth: 420 }}>
-              Join Chef's Atlas and share your first recipe with the world today.
+              Join FridgeToFork and share your first recipe with the world today.
             </p>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center", marginTop: 8 }}>
-              <a href="/recipes/new" style={{ display: "inline-flex", alignItems: "center", padding: "13px 28px", borderRadius: "var(--r-pill)", background: "linear-gradient(145deg, #c85e30 0%, #9a3d18 55%, #7a3010 100%)", color: "white", fontWeight: 600, fontSize: "0.92rem", textDecoration: "none", boxShadow: "0 1px 0 rgba(255,255,255,0.18) inset, 0 12px 28px rgba(122,48,16,0.4)" }}>
+              <a href="/recipes/new" style={{ display: "inline-flex", alignItems: "center", padding: "13px 28px", borderRadius: "var(--r-pill)", background: "linear-gradient(145deg, #166b43 0%, #0b4229 55%, #0a3a24 100%)", color: "white", fontWeight: 600, fontSize: "0.92rem", textDecoration: "none", boxShadow: "0 1px 0 rgba(255,255,255,0.18) inset, 0 12px 28px rgba(10,58,36,0.4)" }}>
                 Share a Recipe
               </a>
               <a href="/recipes" style={{ display: "inline-flex", alignItems: "center", padding: "13px 28px", borderRadius: "var(--r-pill)", background: "rgba(255,255,255,0.15)", color: "white", fontWeight: 600, fontSize: "0.92rem", textDecoration: "none", border: "1px solid rgba(255,255,255,0.35)", backdropFilter: "blur(8px)" }}>

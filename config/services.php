@@ -35,4 +35,17 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
     ],
 
+    /*
+     | Nutrition Insights. `local` uses the bundled per-ingredient table and
+     | needs no credentials; `spoonacular` and `edamam` call out to the
+     | third-party APIs named in the project proposal and fall back to the
+     | local estimate if the request fails.
+     */
+    'nutrition' => [
+        'provider' => env('NUTRITION_PROVIDER', 'local'),
+        'spoonacular_key' => env('SPOONACULAR_KEY'),
+        'edamam_app_id' => env('EDAMAM_APP_ID'),
+        'edamam_app_key' => env('EDAMAM_APP_KEY'),
+    ],
+
 ];

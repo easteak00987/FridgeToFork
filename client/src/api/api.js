@@ -5,14 +5,14 @@ function isFormData(value) {
 }
 
 export function getToken() {
-  return localStorage.getItem("chefsatlas_token");
+  return localStorage.getItem("fridgetofork_token");
 }
 
 export function setToken(token) {
   if (token) {
-    localStorage.setItem("chefsatlas_token", token);
+    localStorage.setItem("fridgetofork_token", token);
   } else {
-    localStorage.removeItem("chefsatlas_token");
+    localStorage.removeItem("fridgetofork_token");
   }
 }
 
@@ -69,6 +69,18 @@ function appendRecipeFormData(body) {
     formData.append(`categories[${index}]`, item);
   });
 
+  (body.diet_tags ?? []).forEach((item, index) => {
+    formData.append(`diet_tags[${index}]`, item);
+  });
+
+  // Cuisine, timing and difficulty travel alongside the image upload.
+  ["cuisine_code", "difficulty", "prep_minutes", "cook_minutes", "servings"].forEach((key) => {
+    const value = body[key];
+    if (value !== undefined && value !== null && value !== "") {
+      formData.append(key, value);
+    }
+  });
+
   if (body.image) {
     formData.append("image", body.image);
   }
@@ -113,6 +125,12 @@ export const api = {
     const search = new URLSearchParams();
     if (params.search) search.set("search", params.search);
     if (params.categories?.length) search.set("categories", params.categories.join(","));
+    if (params.diets?.length) search.set("diets", params.diets.join(","));
+    if (params.ingredients?.length) search.set("ingredients", params.ingredients.join(","));
+    if (params.cuisine) search.set("cuisine", params.cuisine);
+    if (params.region) search.set("region", params.region);
+    if (params.difficulty) search.set("difficulty", params.difficulty);
+    if (params.max_minutes) search.set("max_minutes", params.max_minutes);
     if (params.page) search.set("page", params.page);
     const suffix = search.toString() ? `?${search.toString()}` : "";
     return request(`/recipes${suffix}`, {}, { errorMessage: "We couldn't load recipes right now." });
@@ -207,4 +225,121 @@ export const api = {
     ),
   getUserTips: (userId) =>
     request(`/users/${userId}/tips`, {}, { errorMessage: "We couldn't load tips right now." }),
+
+  // ── Account & Profiles ────────────────────────────────────────────────
+  profile: () => request("/profile", {}, { errorMessage: "We couldn't load your profile right now." }),
+  updateProfile: (body) =>
+    request(
+      "/profile",
+      { method: "PUT", body: JSON.stringify(body) },
+      { errorMessage: "We couldn't save your preferences right now." }
+    ),
+
+  // ── Ingredient-Based Search ───────────────────────────────────────────
+  ingredients: (params = {}) => {
+    const search = new URLSearchParams();
+    if (params.search) search.set("search", params.search);
+    if (params.staples) search.set("staples", "1");
+    if (params.limit) search.set("limit", params.limit);
+    const suffix = search.toString() ? `?${search.toString()}` : "";
+    return request(`/ingredients${suffix}`, {}, { errorMessage: "We couldn't load ingredients right now." });
+  },
+  pantry: () => request("/pantry", {}, { errorMessage: "We couldn't load your fridge right now." }),
+  addPantryItem: (body) =>
+    request(
+      "/pantry",
+      { method: "POST", body: JSON.stringify(body) },
+      { errorMessage: "We couldn't add that to your fridge." }
+    ),
+  syncPantry: (names) =>
+    request(
+      "/pantry",
+      { method: "PUT", body: JSON.stringify({ names }) },
+      { errorMessage: "We couldn't update your fridge." }
+    ),
+  removePantryItem: (id) =>
+    request(
+      `/pantry/${id}`,
+      { method: "DELETE" },
+      { errorMessage: "We couldn't remove that from your fridge." }
+    ),
+  searchByIngredients: (body) =>
+    request(
+      "/pantry/search",
+      { method: "POST", body: JSON.stringify(body) },
+      { errorMessage: "We couldn't run that search right now." }
+    ),
+
+  // ── Cuisine Map Explorer ──────────────────────────────────────────────
+  cuisines: () => request("/cuisines", {}, { errorMessage: "We couldn't load the cuisine map right now." }),
+  cuisine: (code) =>
+    request(`/cuisines/${code}`, {}, { errorMessage: "We couldn't load recipes for that country." }),
+
+  // ── Guided Cooking Mode ───────────────────────────────────────────────
+  cookMode: (recipeId, servings) =>
+    request(
+      `/recipes/${recipeId}/cook${servings ? `?servings=${servings}` : ""}`,
+      {},
+      { errorMessage: "We couldn't start cook mode for this recipe." }
+    ),
+
+  // ── Meal Planner ──────────────────────────────────────────────────────
+  mealPlan: (weekStart) =>
+    request(
+      `/meal-plan${weekStart ? `?week_start=${weekStart}` : ""}`,
+      {},
+      { errorMessage: "We couldn't load your meal plan right now." }
+    ),
+  addMealPlanEntry: (body) =>
+    request(
+      "/meal-plan",
+      { method: "POST", body: JSON.stringify(body) },
+      { errorMessage: "We couldn't add that to your meal plan." }
+    ),
+  updateMealPlanEntry: (id, body) =>
+    request(
+      `/meal-plan/${id}`,
+      { method: "PUT", body: JSON.stringify(body) },
+      { errorMessage: "We couldn't update that meal." }
+    ),
+  removeMealPlanEntry: (id) =>
+    request(
+      `/meal-plan/${id}`,
+      { method: "DELETE" },
+      { errorMessage: "We couldn't remove that meal." }
+    ),
+
+  // ── Auto Shopping List ────────────────────────────────────────────────
+  shoppingList: () =>
+    request("/shopping-list", {}, { errorMessage: "We couldn't load your shopping list right now." }),
+  addShoppingItem: (body) =>
+    request(
+      "/shopping-list",
+      { method: "POST", body: JSON.stringify(body) },
+      { errorMessage: "We couldn't add that to your list." }
+    ),
+  generateShoppingList: (body = {}) =>
+    request(
+      "/shopping-list/generate",
+      { method: "POST", body: JSON.stringify(body) },
+      { errorMessage: "We couldn't build your shopping list right now." }
+    ),
+  updateShoppingItem: (id, body) =>
+    request(
+      `/shopping-list/${id}`,
+      { method: "PUT", body: JSON.stringify(body) },
+      { errorMessage: "We couldn't update that item." }
+    ),
+  removeShoppingItem: (id) =>
+    request(
+      `/shopping-list/${id}`,
+      { method: "DELETE" },
+      { errorMessage: "We couldn't remove that item." }
+    ),
+  clearShoppingList: (checkedOnly = false) =>
+    request(
+      "/shopping-list/clear",
+      { method: "POST", body: JSON.stringify({ checked_only: checkedOnly }) },
+      { errorMessage: "We couldn't clear your list right now." }
+    ),
 };

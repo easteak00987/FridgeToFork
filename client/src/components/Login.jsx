@@ -40,10 +40,10 @@ export default function Login({ onClose, onLoginSuccess, onSwitchToSignup, onSwi
 
         <div className="modal-header">
           <div className="modal-logo">
-            <img src={logo} alt="Chef's Atlas" style={{ width: "100px", height: "100px", objectFit: "contain" }} />
+            <img src={logo} alt="FridgeToFork" style={{ width: "100px", height: "100px", objectFit: "contain" }} />
           </div>
           <h2 className="modal-title">Welcome back</h2>
-          <p className="modal-subtitle">Sign in to share recipes & explore your kitchen atlas</p>
+          <p className="modal-subtitle">Sign in to cook from what you already have</p>
         </div>
 
         <form className="modal-form" onSubmit={handleLogin}>

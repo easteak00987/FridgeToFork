@@ -2,7 +2,7 @@ const footerStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap');
 
   .chef-footer {
-    --cream: #fdf6ec;
+    --cream: #fbfbfa;
     --warm-brown: #3b2a1a;
     --amber: #c8883a;
     --muted: #9a8472;
@@ -116,15 +116,15 @@ export default function Footer() {
     <>
       <style>{footerStyles}</style>
       <footer className="chef-footer">
-        <div className="chef-footer__bg-text">Atlas</div>
+        <div className="chef-footer__bg-text">Fork</div>
 
         <div className="chef-footer__inner">
           {/* Logo */}
           <div className="chef-footer__logo">
             <h2 className="chef-footer__logo-name">
-              Chef's <span>Atlas</span>
+              Fridge<span>ToFork</span>
             </h2>
-            <p className="chef-footer__tagline">Recipes &amp; Kitchen Stories</p>
+            <p className="chef-footer__tagline">From your fridge to your fork</p>
           </div>
 
           <div className="chef-footer__divider" />
@@ -136,7 +136,7 @@ export default function Footer() {
 
           {/* Bottom */}
           <div className="chef-footer__bottom">
-            © {year} Chef's Atlas — All rights reserved
+            © {year} FridgeToFork — All rights reserved
           </div>
         </div>
       </footer>

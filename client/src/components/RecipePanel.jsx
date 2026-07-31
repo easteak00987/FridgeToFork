@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api/api";
 import ConfirmModal from "./ConfirmModal";
+import NutritionPanel from "./NutritionPanel";
 import StarRating from "./StarRating";
 import TipModal from "./TipModal";
 import { useToast } from "./useToast";
@@ -224,6 +225,20 @@ export default function RecipePanel({
               <div className="meta-row">
                 <span>By {recipe.user?.name || "Unknown"}</span>
                 <span>{reviewCount} reviews</span>
+                {recipe.cuisine_country && <span>{recipe.cuisine_country}</span>}
+                {recipe.difficulty && <span className="capitalize">{recipe.difficulty}</span>}
+                {recipe.total_minutes ? <span>{recipe.total_minutes} min</span> : null}
+                {recipe.servings ? <span>Serves {recipe.servings}</span> : null}
+              </div>
+
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <Link
+                  className="rounded-[var(--r-pill)] bg-[var(--brand)] px-5 py-2 text-sm font-semibold text-white"
+                  to={`/recipes/${recipe.id}/cook`}
+                >
+                  Start cook mode
+                </Link>
+                <NutritionPanel nutrition={recipe.nutrition} compact />
               </div>
             </div>
 

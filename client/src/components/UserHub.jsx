@@ -128,10 +128,10 @@ export default function UserHub() {
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
             <div style={{
               width: 70, height: 70, borderRadius: "50%", flexShrink: 0,
-              background: "linear-gradient(145deg,#c9882c 0%,#b84e20 55%,#1f5240 100%)",
+              background: "linear-gradient(145deg,#c79a3e 0%,#0f5132 55%,#b5762a 100%)",
               display: "grid", placeItems: "center",
-              fontFamily: "var(--font-display)", fontSize: "1.75rem", color: "#fff9f1",
-              boxShadow: "0 8px 28px rgba(122,48,16,.45), inset 0 1px 0 rgba(255,255,255,.22)",
+              fontFamily: "var(--font-display)", fontSize: "1.75rem", color: "#ffffff",
+              boxShadow: "0 8px 28px rgba(10,58,36,.45), inset 0 1px 0 rgba(255,255,255,.22)",
             }}>
               {initials}
             </div>
@@ -139,7 +139,7 @@ export default function UserHub() {
               <h1 style={{ margin: 0, fontSize: "clamp(1.8rem,4vw,3rem)", lineHeight: 1 }}>
                 {user.name}
               </h1>
-              <p style={{ margin: "6px 0 0", color: "rgba(255,246,235,.6)", fontWeight: 300, fontSize: "0.92rem" }}>
+              <p style={{ margin: "6px 0 0", color: "rgba(250,250,249,.6)", fontWeight: 300, fontSize: "0.92rem" }}>
                 Recipe creator &amp; food enthusiast
               </p>
             </div>
@@ -154,7 +154,7 @@ export default function UserHub() {
 
         <div className="admin-hero__panel">
           <div className="admin-highlight">
-            <span className="admin-highlight__label" style={{ color: "rgba(255,246,235,.5)" }}>
+            <span className="admin-highlight__label" style={{ color: "rgba(250,250,249,.5)" }}>
               Quick Actions
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 6 }}>
