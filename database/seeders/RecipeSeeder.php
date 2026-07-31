@@ -6,7 +6,6 @@ use App\Http\Services\RecipeIngredientSync;
 use App\Models\Category;
 use App\Models\Recipe;
 use App\Models\User;
-use App\Support\DishArtwork;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -997,11 +996,9 @@ class RecipeSeeder extends Seeder
             $recipe->categories()->sync($categoryIds);
 
             // Fills the ingredient pivot, normalises the cuisine fields and
-            // computes per-serving nutrition.
+            // computes per-serving nutrition. Artwork needs no seeding step —
+            // it is generated per request from the recipe itself.
             $this->sync->sync($recipe);
-
-            // Generated dish illustration, so every seeded recipe has a picture.
-            DishArtwork::attach($recipe->load('categories'));
         }
 
         // Recipes written straight to the model skip the controller's upload

@@ -3,8 +3,6 @@
 namespace App\Support;
 
 use App\Models\Recipe;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 /**
  * Generates a flat-illustration "plated dish" SVG for a recipe.
@@ -12,8 +10,13 @@ use Illuminate\Support\Str;
  * Every recipe gets a distinct image without shipping stock photography: the
  * layout is fixed (overhead plate on a tinted ground), while the palette,
  * blob silhouette and garnish scatter are all derived deterministically from
- * the recipe title. The same title always produces the same picture, so
- * re-seeding does not churn the image files.
+ * the recipe title.
+ *
+ * Nothing is written to disk — the SVG is rendered per request by
+ * RecipeController@artwork. That keeps the app working on hosts with a
+ * read-only or ephemeral filesystem (Railway, Vercel, any container that is
+ * replaced on deploy), and means artwork can never go stale against a
+ * renamed recipe.
  */
 class DishArtwork
 {
@@ -31,22 +34,6 @@ class DishArtwork
         'dessert' => ['#f3eeea', '#fbf8f6', '#5d3b2c', '#432a1f', '#d9b48a', '#8a5a3c'],
         'herb'   => ['#edf1ee', '#f8faf8', '#5f7d49', '#445c34', '#a9c47f', '#c98432'],
     ];
-
-    /**
-     * Write the artwork to the public disk and point the recipe at it.
-     * Used for seeded recipes and for uploads that arrive without a photo, so
-     * no recipe ever renders as an empty grey box.
-     */
-    public static function attach(Recipe $recipe): Recipe
-    {
-        $path = 'recipes/generated/' . Str::slug($recipe->title) . '.svg';
-
-        Storage::disk('public')->put($path, self::svg($recipe));
-
-        $recipe->forceFill(['image_path' => $path])->save();
-
-        return $recipe;
-    }
 
     public static function svg(Recipe $recipe): string
     {

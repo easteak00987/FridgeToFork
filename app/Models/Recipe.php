@@ -79,9 +79,19 @@ class Recipe extends Model
         return $this->hasMany(MealPlanEntry::class);
     }
 
+    /**
+     * Absolute, because the front-end is served from a different origin in
+     * production (Vercel) where a relative `/api/...` would be swallowed by
+     * the SPA catch-all rewrite rather than reaching the API.
+     *
+     * Recipes with no uploaded photo fall back to their generated dish
+     * illustration, so a card is never an empty box.
+     */
     public function getImageUrlAttribute()
     {
-        return $this->image_path ? '/api/recipe-images/' . $this->image_path : null;
+        return $this->image_path
+            ? url('/api/recipe-images/' . $this->image_path)
+            : url('/api/recipes/' . $this->id . '/artwork.svg');
     }
 
     public function getTotalMinutesAttribute()

@@ -154,6 +154,68 @@ Compose runs the API against PostgreSQL 16 and serves the client through nginx o
 port 5173, with Mailpit on 8025 for outgoing mail. To point a non-Docker run at
 PostgreSQL instead of SQLite, uncomment the `pgsql` block in `.env`.
 
+---
+
+## Deployment
+
+The two halves deploy separately: the SPA to **Vercel**, the Laravel API and its
+PostgreSQL database to **Railway**. Vercel cannot host the API — PHP is not a
+first-class runtime there, and the filesystem is read-only, which Laravel's
+`storage/framework` cache, session and view directories need.
+
+### 1. Backend → Railway
+
+Railway builds `docker/app/Dockerfile` (already wired up in `railway.toml`).
+
+1. Create a Railway project from the repo, then add a **PostgreSQL** plugin.
+2. Set these variables on the app service:
+
+   | Variable | Value |
+   |---|---|
+   | `APP_KEY` | output of `php artisan key:generate --show` |
+   | `APP_ENV` | `production` |
+   | `APP_DEBUG` | `false` |
+   | `APP_URL` | your Railway URL, e.g. `https://fridgetofork.up.railway.app` |
+   | `DB_CONNECTION` | `pgsql` |
+   | `DATABASE_URL` | reference the Postgres plugin's connection string |
+   | `CORS_ALLOWED_ORIGINS` | your Vercel URL, e.g. `https://fridgetofork.vercel.app` |
+   | `RUN_SEED` | `true` for the first deploy only, then remove it |
+
+`APP_URL` matters: recipe `image_url` values are absolute, and they are built
+from it.
+
+`docker/app/start.sh` waits for the database (driver-agnostic, so `DATABASE_URL`
+works), runs migrations, caches config and routes, and binds Apache to the
+`PORT` Railway injects.
+
+### 2. Frontend → Vercel
+
+Set the project's **root directory to `client`** — `client/vercel.json` supplies
+the build settings and the SPA catch-all rewrite that keeps deep links like
+`/fridge` from 404ing.
+
+One environment variable:
+
+```
+VITE_API_URL = https://<your-railway-app>.up.railway.app/api
+```
+
+```bash
+cd client
+vercel        # preview deploy
+vercel --prod # production
+```
+
+### Uploaded photos need object storage
+
+Generated dish artwork is rendered per request and needs no disk. **Uploaded**
+recipe photos still go to the local disk, which is ephemeral on Railway — they
+disappear on redeploy. For durable uploads set `FILESYSTEM_DISK=s3` plus the
+`AWS_*` variables already present in `.env.example`; any S3-compatible bucket
+(Cloudflare R2, Backblaze B2) works.
+
+---
+
 ### Tests
 
 ```bash

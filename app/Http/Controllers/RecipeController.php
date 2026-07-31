@@ -144,6 +144,16 @@ class RecipeController extends Controller
         ]);
     }
 
+    /** The generated dish illustration, rendered on the fly (never stored). */
+    public function artwork(Recipe $recipe)
+    {
+        return response(DishArtwork::svg($recipe->load('categories')), Response::HTTP_OK, [
+            'Content-Type' => 'image/svg+xml',
+            'X-Content-Type-Options' => 'nosniff',
+            'Cache-Control' => 'public, max-age=604800',
+        ]);
+    }
+
     public function image(string $path)
     {
         abort_unless(Storage::disk('public')->exists($path), Response::HTTP_NOT_FOUND);
@@ -186,13 +196,6 @@ class RecipeController extends Controller
         $categoryIds = $this->resolveCategoryIds($validated['categories']);
         $recipe->categories()->sync($categoryIds);
         $this->sync->sync($recipe);
-
-        // No photo uploaded? Give the recipe a generated dish illustration
-        // rather than leaving an empty card in the library.
-        if (!$recipe->image_path) {
-            DishArtwork::attach($recipe->load('categories'));
-        }
-
         $user->increment('points', self::UPLOAD_REWARD);
 
         return response()->json([
@@ -281,10 +284,6 @@ class RecipeController extends Controller
         }
 
         $this->sync->sync($recipe);
-
-        if (!$recipe->image_path) {
-            DishArtwork::attach($recipe->load('categories'));
-        }
 
         return response()->json([
             'message' => 'Recipe updated successfully.',

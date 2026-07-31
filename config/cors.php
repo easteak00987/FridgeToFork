@@ -19,7 +19,16 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    /*
+     | The SPA is served from a different origin in production (Vercel), so the
+     | API must name it explicitly. Set CORS_ALLOWED_ORIGINS to a comma-separated
+     | list of origins; leaving it unset falls back to '*', which is fine for
+     | local development because auth is Bearer-token based, not cookie based
+     | (supports_credentials is false below).
+     */
+    'allowed_origins' => array_values(array_filter(
+        explode(',', (string) env('CORS_ALLOWED_ORIGINS', '*'))
+    )),
 
     'allowed_origins_patterns' => [],
 

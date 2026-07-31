@@ -27,6 +27,7 @@ Route::get('categories', [CategoryController::class, 'index']);
 Route::get('recipes', [RecipeController::class, 'index']);
 Route::get('recipes/{recipe}', [RecipeController::class, 'show']);
 Route::get('recipe-images/{path}', [RecipeController::class, 'image'])->where('path', '.*');
+Route::get('recipes/{recipe}/artwork.svg', [RecipeController::class, 'artwork']);
 Route::get('leaderboards', [DashboardController::class, 'leaderboards']);
 Route::get('users/{user}/tips', [TipController::class, 'show']);
 Route::post('contact', [ContactController::class, 'store']);
