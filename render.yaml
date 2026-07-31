@@ -12,6 +12,7 @@ databases:
     databaseName: fridgetofork
     user: fridgetofork
     plan: free
+    region: singapore
 
 services:
   - type: web
@@ -20,7 +21,9 @@ services:
     dockerfilePath: ./docker/app/Dockerfile
     dockerContext: .
     plan: free
-    region: oregon
+    # Same region as the database so they talk over the private network, and
+    # the closest Render region to South Asia.
+    region: singapore
     healthCheckPath: /api/cuisines
     envVars:
       - key: APP_ENV
