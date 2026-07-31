@@ -2,6 +2,29 @@
 
 *From your fridge to your fork.*
 
+## Live demo
+
+| | |
+|---|---|
+| **App** | **https://fridgetofork-theta.vercel.app** |
+| **API** | https://fridgetofork-api.onrender.com/api |
+
+Sign in as the demo cook to get a stocked fridge, a planned week, favourites and
+reviews already in place:
+
+| Account | Email | Password |
+|---|---|---|
+| Demo cook | `demo@fridgetofork.test` | `DemoPass123!` |
+| Admin | `admin@fridgetofork.local` | `AdminPass123!` |
+
+> The API runs on a free Render instance, which sleeps when idle — the first
+> request after a quiet spell takes 30–60 seconds to wake. Load the app once
+> before demoing it.
+
+Worth a look first: **My Fridge** (`/fridge`) ranks all 32 recipes by how much of
+each you can already make, and **Cuisine Map** (`/cuisines`) browses them by
+country.
+
 ## Project Overview
 
 ### Objective
@@ -158,6 +181,15 @@ PostgreSQL instead of SQLite, uncomment the `pgsql` block in `.env`.
 
 ## Deployment
 
+**Currently deployed to:**
+
+| Half | Host | URL |
+|---|---|---|
+| React SPA | Vercel | https://fridgetofork-theta.vercel.app |
+| Laravel API + PostgreSQL | Render (Singapore) | https://fridgetofork-api.onrender.com |
+
+Both track the `anadiModifications` branch and redeploy on push.
+
 The two halves deploy separately: the SPA to **Vercel**, the Laravel API and its
 PostgreSQL database to a container host. Vercel cannot host the API — PHP is not
 a first-class runtime there, and the filesystem is read-only, which Laravel's
@@ -189,10 +221,10 @@ Railway builds `docker/app/Dockerfile` (already wired up in `railway.toml`).
    | `APP_KEY` | output of `php artisan key:generate --show` |
    | `APP_ENV` | `production` |
    | `APP_DEBUG` | `false` |
-   | `APP_URL` | your Railway URL, e.g. `https://fridgetofork.up.railway.app` |
+   | `APP_URL` | your Railway URL, e.g. `https://<your-app>.up.railway.app` |
    | `DB_CONNECTION` | `pgsql` |
    | `DATABASE_URL` | reference the Postgres plugin's connection string |
-   | `CORS_ALLOWED_ORIGINS` | your Vercel URL, e.g. `https://fridgetofork.vercel.app` |
+   | `CORS_ALLOWED_ORIGINS` | your Vercel URL, e.g. `https://fridgetofork-theta.vercel.app` |
    | `RUN_SEED` | `true` for the first deploy only, then remove it |
 
 `APP_URL` matters: recipe `image_url` values are absolute, and they are built
