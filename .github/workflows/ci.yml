@@ -44,11 +44,6 @@ jobs:
       - name: Run backend tests
         run: php artisan test
 
-      - name: Build Laravel Vite assets
-        run: |
-          npm ci
-          npm run build
-
       - name: Build backend container
         run: docker build -f docker/app/Dockerfile .
 
