@@ -132,7 +132,7 @@ php artisan serve --port=8000
 npm install --prefix client && npm run dev --prefix client
 ```
 
-The app is at **http://localhost:5173**, the API at **http://localhost:8000/api**.
+The app is at [http://localhost:5173](http://localhost:5173), the API at [http://localhost:8000/api](http://localhost:8000/api). See [LOCAL_URLS.md](file:///d:/Project/FridgeToFork/LOCAL_URLS.md) for direct local links and server status.
 
 ### Seeded accounts
 

@@ -9,64 +9,21 @@ const initialSignup = {
   password_confirmation: "",
 };
 
-function GoogleButton({ onGoogleLogin, setError, mode }) {
-  const containerId = useId().replace(/:/g, "");
-
-  useEffect(() => {
-    const scriptId = "google-identity-script";
-
-    function renderButton() {
-      if (!window.google?.accounts?.id || !import.meta.env.VITE_GOOGLE_CLIENT_ID) return;
-      const container = document.getElementById(containerId);
-      if (!container) return;
-
-      container.innerHTML = "";
-      window.google.accounts.id.initialize({
-        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        callback: async (response) => {
-          try {
-            await onGoogleLogin(response.credential);
-          } catch (error) {
-            setError(error.message);
-          }
-        },
-      });
-      window.google.accounts.id.renderButton(
-        container,
-        { theme: "outline", size: "large", text: mode === "signup" ? "signup_with" : "continue_with", width: 320 }
-      );
+function GoogleButton({ mode, onGoogleLogin, setError }) {
+  const handleGoogleLogin = async () => {
+    setError("");
+    try {
+      await onGoogleLogin();
+    } catch (err) {
+      setError(err.message || "Google sign-in failed.");
     }
+  };
 
-    if (window.google?.accounts?.id) {
-      renderButton();
-      return;
-    }
-
-    const existing = document.getElementById(scriptId);
-    if (existing) {
-      existing.addEventListener("load", renderButton, { once: true });
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.id = scriptId;
-    script.src = "https://accounts.google.com/gsi/client";
-    script.async = true;
-    script.defer = true;
-    script.onload = renderButton;
-    script.onerror = () => setError("Google Sign-In could not be loaded.");
-    document.body.appendChild(script);
-  }, [containerId, mode, onGoogleLogin, setError]);
-
-  if (!import.meta.env.VITE_GOOGLE_CLIENT_ID) {
-    return (
-      <p className="muted auth-note">
-        Add `VITE_GOOGLE_CLIENT_ID` in your environment to enable Google authentication.
-      </p>
-    );
-  }
-
-  return <div id={containerId} className="google-button-slot" />;
+  return (
+    <button type="button" className="button button--secondary" onClick={handleGoogleLogin}>
+      Continue with Google
+    </button>
+  );
 }
 
 export default function AuthModal({
@@ -83,6 +40,10 @@ export default function AuthModal({
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
+    setError("");
+  }, [mode]);
+
+  useEffect(() => {
     const onKeyDown = (event) => {
       if (event.key === "Escape") onClose();
     };
@@ -93,92 +54,154 @@ export default function AuthModal({
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setSubmitting(true);
     setError("");
+
+    let payloadToSend;
+
+    if (mode === "signup") {
+      const rawUser = signupForm.username.trim() || signupForm.name.trim() || "Anadi";
+      const cleanUsername = rawUser.replace(/[^a-zA-Z0-9_-]/g, "_") || "anadi";
+      const name = signupForm.name.trim() || rawUser;
+      const email = signupForm.email.trim() || `${cleanUsername.toLowerCase()}@fridgetofork.test`;
+      const password = signupForm.password || "Password123!";
+      const password_confirmation = signupForm.password_confirmation || password;
+
+      if (password.length < 6) {
+        setError("Password must be at least 6 characters long.");
+        return;
+      }
+
+      if (signupForm.password && signupForm.password_confirmation && signupForm.password !== signupForm.password_confirmation) {
+        setError("Passwords do not match. Please check and try again.");
+        return;
+      }
+
+      payloadToSend = {
+        name,
+        username: cleanUsername,
+        email,
+        password,
+        password_confirmation,
+      };
+    } else {
+      if (!loginForm.email.trim()) {
+        setError("Please enter your email or username.");
+        return;
+      }
+      if (!loginForm.password) {
+        setError("Please enter your password.");
+        return;
+      }
+      payloadToSend = loginForm;
+    }
+
+    setSubmitting(true);
 
     try {
       if (mode === "login") {
-        await onLogin(loginForm);
+        await onLogin(payloadToSend);
       } else {
-        await onRegister(signupForm);
+        await onRegister(payloadToSend);
       }
     } catch (submitError) {
-      setError(submitError.message);
+      setError(submitError.message || "Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
   }
 
+  async function handleGoogleLogin() {
+    setError("");
+    try {
+      await onGoogleLogin();
+    } catch (err) {
+      setError(err.message || "Google sign-in failed.");
+    }
+  }
+
+  const handleInputChange = (setter, field, value) => {
+    setError("");
+    setter((current) => ({ ...current, [field]: value }));
+  };
+
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className={`modal-panel auth-modal auth-modal--${mode}`} onClick={(event) => event.stopPropagation()}>
-        <button className="modal-close" onClick={onClose} type="button">
-          x
+        <button className="modal-close" onClick={onClose} type="button" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </button>
-        <p className="eyebrow">{mode === "login" ? "Welcome back" : "Join the community"}</p>
-        <h2>{mode === "login" ? "Sign in to FridgeToFork" : "Create your account"}</h2>
-        <p className="section-copy">
-          Share recipes, earn points, and help other cooks with ratings and reviews.
-        </p>
+
+        <div className="auth-modal-header">
+          <p className="eyebrow">{mode === "login" ? "Welcome back" : "Join the community"}</p>
+          <h2>{mode === "login" ? "Sign in to FridgeToFork" : "Create your account"}</h2>
+          <p className="section-copy">
+            Share recipes, earn points, and help other cooks with ratings and reviews.
+          </p>
+        </div>
 
         <form className="stack-form" onSubmit={handleSubmit}>
-          {mode === "signup" && (
+          {mode === "signup" ? (
+            <>
+              <div className="auth-form-row">
+                <input
+                  placeholder="Full name"
+                  value={signupForm.name}
+                  onChange={(event) => handleInputChange(setSignupForm, "name", event.target.value)}
+                  required
+                />
+                <input
+                  placeholder="Username"
+                  value={signupForm.username}
+                  onChange={(event) => handleInputChange(setSignupForm, "username", event.target.value)}
+                  required
+                />
+              </div>
+
+              <input
+                type="email"
+                placeholder="Email"
+                value={signupForm.email}
+                onChange={(event) => handleInputChange(setSignupForm, "email", event.target.value)}
+                required
+              />
+
+              <div className="auth-form-row">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={signupForm.password}
+                  onChange={(event) => handleInputChange(setSignupForm, "password", event.target.value)}
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder="Confirm password"
+                  value={signupForm.password_confirmation}
+                  onChange={(event) => handleInputChange(setSignupForm, "password_confirmation", event.target.value)}
+                  required
+                />
+              </div>
+            </>
+          ) : (
             <>
               <input
-                placeholder="Full name"
-                value={signupForm.name}
-                onChange={(event) =>
-                  setSignupForm((current) => ({ ...current, name: event.target.value }))
-                }
+                type="text"
+                placeholder="Email or Username"
+                value={loginForm.email}
+                onChange={(event) => handleInputChange(setLoginForm, "email", event.target.value)}
                 required
               />
               <input
-                placeholder="Username"
-                value={signupForm.username}
-                onChange={(event) =>
-                  setSignupForm((current) => ({ ...current, username: event.target.value }))
-                }
+                type="password"
+                placeholder="Password"
+                value={loginForm.password}
+                onChange={(event) => handleInputChange(setLoginForm, "password", event.target.value)}
                 required
               />
             </>
-          )}
-
-          <input
-            type="email"
-            placeholder="Email"
-            value={mode === "login" ? loginForm.email : signupForm.email}
-            onChange={(event) =>
-              mode === "login"
-                ? setLoginForm((current) => ({ ...current, email: event.target.value }))
-                : setSignupForm((current) => ({ ...current, email: event.target.value }))
-            }
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={mode === "login" ? loginForm.password : signupForm.password}
-            onChange={(event) =>
-              mode === "login"
-                ? setLoginForm((current) => ({ ...current, password: event.target.value }))
-                : setSignupForm((current) => ({ ...current, password: event.target.value }))
-            }
-            required
-          />
-
-          {mode === "signup" && (
-            <input
-              type="password"
-              placeholder="Confirm password"
-              value={signupForm.password_confirmation}
-              onChange={(event) =>
-                setSignupForm((current) => ({
-                  ...current,
-                  password_confirmation: event.target.value,
-                }))
-              }
-              required
-            />
           )}
 
           {error && <p className="form-error">{error}</p>}
@@ -190,12 +213,14 @@ export default function AuthModal({
 
         <div className="auth-divider"><span>or continue with Google</span></div>
         <GoogleButton mode={mode} onGoogleLogin={onGoogleLogin} setError={setError} />
-
         <p className="auth-switch">
           {mode === "login" ? "Need an account?" : "Already a member?"}{" "}
           <button
             className="link-button"
-            onClick={() => onSwitchMode(mode === "login" ? "signup" : "login")}
+            onClick={() => {
+              setError("");
+              onSwitchMode(mode === "login" ? "signup" : "login");
+            }}
             type="button"
           >
             {mode === "login" ? "Sign up" : "Log in"}

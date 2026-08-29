@@ -39,13 +39,20 @@ async function request(path, options = {}, config = {}) {
     : null;
 
   if (!response.ok) {
-    const error = new Error(config.errorMessage || "Something went wrong. Please try again.");
+    const firstFieldError = payload?.errors
+      ? Object.values(payload.errors).flat()[0]
+      : null;
+    const serverMessage =
+      firstFieldError ||
+      (payload?.message && payload.message !== "The submitted data is invalid." ? payload.message : null) ||
+      payload?.message ||
+      config.errorMessage ||
+      "Something went wrong. Please try again.";
+
+    const error = new Error(serverMessage);
     error.status = response.status;
     error.payload = payload;
-    error.rawMessage =
-      payload?.message ||
-      (payload?.errors ? Object.values(payload.errors).flat()[0] : null) ||
-      null;
+    error.rawMessage = serverMessage;
     throw error;
   }
 

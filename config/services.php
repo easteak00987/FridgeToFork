@@ -32,7 +32,12 @@ return [
     ],
 
     'google' => [
-        'client_id' => env('GOOGLE_CLIENT_ID'),
+        // The browser is the OAuth client for Google Identity Services. Prefer
+        // its public Vite ID so token audience validation cannot drift from the
+        // client that initiated the sign-in flow.
+        'client_id'     => env('VITE_GOOGLE_CLIENT_ID', env('GOOGLE_CLIENT_ID')),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect_uri'  => env('APP_URL', 'http://localhost:8000') . '/api/auth/google/callback',
     ],
 
     /*
