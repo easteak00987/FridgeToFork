@@ -19,9 +19,10 @@ use App\Http\Controllers\ShoppingListController;
 use App\Http\Controllers\TipController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
-Route::post('auth/google', [AuthController::class, 'google']);
+Route::post('register', [AuthController::class, 'register'])->middleware('throttle:10,1');
+Route::post('login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+Route::post('auth/google', [AuthController::class, 'google'])->middleware('throttle:10,1');
+Route::get('auth/google/callback', [AuthController::class, 'googleCallback']);
 
 Route::get('categories', [CategoryController::class, 'index']);
 Route::get('recipes', [RecipeController::class, 'index']);
@@ -29,7 +30,7 @@ Route::get('recipes/{recipe}', [RecipeController::class, 'show']);
 Route::get('recipe-images/{path}', [RecipeController::class, 'image'])->where('path', '.*');
 Route::get('leaderboards', [DashboardController::class, 'leaderboards']);
 Route::get('users/{user}/tips', [TipController::class, 'show']);
-Route::post('contact', [ContactController::class, 'store']);
+Route::post('contact', [ContactController::class, 'store'])->middleware('throttle:5,1');
 
 // Ingredient-Based Search — works signed out too, using ad-hoc ingredients.
 Route::get('ingredients', [IngredientController::class, 'index']);

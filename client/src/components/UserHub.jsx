@@ -58,6 +58,8 @@ export default function UserHub() {
   const { showToast } = useToast();
 
   useEffect(() => {
+    let active = true;
+
     const loadData = async () => {
       try {
         const dashboardData = await api.dashboard();
@@ -66,21 +68,25 @@ export default function UserHub() {
           throw new Error("Invalid dashboard response — missing user data");
         }
 
+        if (!active) return;
         setDashboard(dashboardData);
 
         const userId = dashboardData.user.id;
         if (userId != null) {
           try {
             const tipsData = await api.getUserTips(userId);
+            if (!active) return;
             setTips(Array.isArray(tipsData?.data) ? tipsData.data : []);
             setTipStats(tipsData?.stats || null);
           } catch {
+            if (!active) return;
             setTips([]);
             setTipStats(null);
             showToast("Your dashboard loaded, but tip activity could not be fetched right now.", "error");
           }
         }
       } catch (err) {
+        if (!active) return;
         console.error("Dashboard error:", err);
         const msg = err.message || "Failed to load dashboard";
         setError(msg);
@@ -89,7 +95,10 @@ export default function UserHub() {
     };
 
     loadData();
-  }, []);
+    return () => {
+      active = false;
+    };
+  }, [showToast]);
 
   if (error) {
     return (
